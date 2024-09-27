@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 
 import { TabBarIcon } from '~/components/TabBarIcon';
+import { ThemeToggle } from '~/components/ThemeToggle';
 
 export default function TabLayout() {
   return (
@@ -14,6 +15,7 @@ export default function TabLayout() {
         options={{
           title: 'Tab One',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => <ThemeToggle />,
         }}
       />
       <Tabs.Screen
@@ -21,6 +23,7 @@ export default function TabLayout() {
         options={{
           title: 'Tab Two',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => <ThemeToggle />,
         }}
       />
     </Tabs>

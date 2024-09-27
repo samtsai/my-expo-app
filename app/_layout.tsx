@@ -1,20 +1,54 @@
 import '../global.css';
 
-import { Stack } from 'expo-router';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Slot, SplashScreen } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(drawer)',
-};
+import { useColorScheme } from '~/lib/useColorScheme';
 
-export default function RootLayout() {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ title: 'Modal', presentation: 'modal' }} />
-      </Stack>
-    </GestureHandlerRootView>
-  );
+// export * as ErrorBoundary from "~/components/FallbackComponent"
+// Re-export the default UI
+export { ErrorBoundary } from 'expo-router';
+
+// Prevent the splash screen from auto-hiding before getting the color scheme.
+void SplashScreen.preventAutoHideAsync();
+
+function RootLayout() {
+  // Capture the NavigationContainer ref and register it with the instrumentation.
+  const { colorScheme, setColorScheme } = useColorScheme();
+  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
+
+  useEffect(() => {
+    void (async () => {
+      const theme = await AsyncStorage.getItem('theme');
+      if (Platform.OS === 'web') {
+        // Adds the background color to the html element to prevent white background on overscroll.
+        document.documentElement.classList.add('bg-background');
+      }
+      if (!theme) {
+        await AsyncStorage.setItem('theme', colorScheme);
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      const colorTheme = theme === 'dark' ? 'dark' : 'light';
+      if (colorTheme !== colorScheme) {
+        await setColorScheme(colorTheme);
+
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      setIsColorSchemeLoaded(true);
+    })().finally(() => {
+      void SplashScreen.hideAsync();
+    });
+  }, [colorScheme, setColorScheme]);
+
+  if (!isColorSchemeLoaded) {
+    return null;
+  }
+
+  return <Slot />;
 }
+
+export default RootLayout;

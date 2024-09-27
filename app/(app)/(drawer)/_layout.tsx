@@ -2,7 +2,8 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 
-import { HeaderButton } from '../../components/HeaderButton';
+import { HeaderButton } from '~/components/HeaderButton';
+import { ThemeToggle } from '~/components/ThemeToggle';
 
 const DrawerLayout = () => (
   <Drawer>
@@ -12,6 +13,7 @@ const DrawerLayout = () => (
         headerTitle: 'Home',
         drawerLabel: 'Home',
         drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />,
+        headerRight: () => <ThemeToggle />,
       }}
     />
     <Drawer.Screen
@@ -23,9 +25,12 @@ const DrawerLayout = () => (
           <MaterialIcons name="border-bottom" size={size} color={color} />
         ),
         headerRight: () => (
-          <Link href="/modal" asChild>
-            <HeaderButton />
-          </Link>
+          <>
+            <ThemeToggle />
+            <Link href="/modal" asChild>
+              <HeaderButton />
+            </Link>
+          </>
         ),
       }}
     />
