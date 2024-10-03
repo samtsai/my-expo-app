@@ -12,7 +12,7 @@ import { useColorScheme } from '~/lib/useColorScheme';
 export { ErrorBoundary } from 'expo-router';
 
 // Prevent the splash screen from auto-hiding before getting the color scheme.
-void SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
   // Capture the NavigationContainer ref and register it with the instrumentation.
@@ -20,7 +20,7 @@ function RootLayout() {
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
   useEffect(() => {
-    void (async () => {
+    (async () => {
       const theme = await AsyncStorage.getItem('theme');
       if (Platform.OS === 'web') {
         // Adds the background color to the html element to prevent white background on overscroll.
@@ -40,7 +40,7 @@ function RootLayout() {
       }
       setIsColorSchemeLoaded(true);
     })().finally(() => {
-      void SplashScreen.hideAsync();
+      SplashScreen.hideAsync();
     });
   }, [colorScheme, setColorScheme]);
 
