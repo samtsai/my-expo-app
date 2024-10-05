@@ -33,7 +33,7 @@ function RootLayout() {
       }
       const colorTheme = theme === 'dark' ? 'dark' : 'light';
       if (colorTheme !== colorScheme) {
-        await setColorScheme(colorTheme);
+        setColorScheme(colorTheme);
 
         setIsColorSchemeLoaded(true);
         return;

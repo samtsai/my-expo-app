@@ -1,6 +1,7 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
+import { View } from 'react-native';
 
 import { HeaderButton } from '~/components/HeaderButton';
 import { ThemeToggle } from '~/components/ThemeToggle';
@@ -25,12 +26,12 @@ const DrawerLayout = () => (
           <MaterialIcons name="border-bottom" size={size} color={color} />
         ),
         headerRight: () => (
-          <>
+          <View className="flex-1 flex-row items-center">
             <ThemeToggle />
             <Link href="/modal" asChild>
               <HeaderButton />
             </Link>
-          </>
+          </View>
         ),
       }}
     />
